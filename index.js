@@ -26,6 +26,7 @@ async function run() {
         await client.connect();
 
         const artCollection = client.db("artsDB").collection("arts");
+        const userCollection = client.db("artsDB").collection("user");
 
         app.get('/arts', async (req, res) => {
             const cursor = artCollection.find();
@@ -75,6 +76,14 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await artCollection.deleteOne(query);
+            res.send(result);
+        })
+
+        // user apis
+        app.post('/user', async (req, res) => {
+            const user = req.body;
+            console.log(user);
+            const result = await userCollection.insertOne(user);
             res.send(result);
         })
 
